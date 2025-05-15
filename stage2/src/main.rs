@@ -307,7 +307,7 @@ fn find_vbe_mode() -> u16 {
             && mode_width <= 1024
             && mode_height > best_mode_height
             && mode_height <= 1024
-            && mode_bpp == 24)
+            && (mode_bpp == 24 || mode_bpp == 32))
             && (mode_attr & 0x80) != 0
         {
             best_mode = mode;
