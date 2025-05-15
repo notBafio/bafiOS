@@ -14,7 +14,7 @@ members = [
     "ide",
     "exec",
     "img",
-    "login"
+    "login",
 ]
 
 resolver="2"
@@ -23,14 +23,6 @@ resolver="2"
 version = "0.1.0"
 authors = ["Bafio", ""]
 edition = "2024"
-
-[profile.dev]
-panic = "abort"
-opt-level = 1
-
-[profile.release]
-panic = "abort"
-opt-level = 1
 
 [profile.dev.package.bootloader]
 opt-level = "s"
@@ -43,3 +35,12 @@ opt-level = "s"
 codegen-units = 1
 debug = false
 overflow-checks = false
+
+[profile.dev]
+panic = "abort"
+opt-level = 1
+
+[profile.release]
+panic = "abort"
+opt-level = 1
+
