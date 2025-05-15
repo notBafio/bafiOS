@@ -1,0 +1,8 @@
+[package]
+name = "exec"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[dependencies.libk]
+path = "../libk"

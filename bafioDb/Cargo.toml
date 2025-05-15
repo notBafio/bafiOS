@@ -1,0 +1,10 @@
+[package]
+name = "bafioDb"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[dependencies]
+
+[dependencies.libk]
+path = "../libk"
