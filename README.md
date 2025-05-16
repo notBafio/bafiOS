@@ -2,7 +2,7 @@
 
 A baremetal x86_32 operating system crafted from scratch in Rust.
 
-## What is BafiOS?
+## What is it?
 
 This project delivers a complete OS environment (bootloader + kernel + userspace) built using only Rust and minimal assembly. No standard library or external dependencies - just pure, baremetal code that talks directly to hardware.
 
@@ -10,9 +10,9 @@ This project delivers a complete OS environment (bootloader + kernel + userspace
 
 - ✅ **Boot Process**: Custom 3-staged bootloader
 - ✅ **Graphics**: VBE mode with 24/32-bit color support
-- ✅ **Storage**: Fast disk access (ATA PIO + DMA)
+- ✅ **Storage**: disk access (ATA PIO + DMA)
 - ✅ **Multitasking**: Pre-emptive scheduling on single core
-- ✅ **Input**: Full PS/2 mouse and keyboard support
+- ✅ **Input**: PS/2 mouse and keyboard support
 - ✅ **Files**: Working Fat16 filesystem implementation
 - ✅ **Security**: User space separation with syscalls
 - ✅ **Interface**: Custom GUI library
@@ -22,7 +22,6 @@ This project delivers a complete OS environment (bootloader + kernel + userspace
 ## Coming Soon
 
 - 🚧 **Memory**: Paging
-- 🚧 **Authentication**: password hashing and profiles management
 - 🚧 **Terminal**: More command-line tools and utilities
 - 🚧 **Libraries**: Shared library support
 - 🚧 **Compatibility**: Basic libc implementation
