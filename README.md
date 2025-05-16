@@ -2,6 +2,10 @@
 
 A baremetal x86_32 operating system crafted from scratch in Rust.
 
+![Alt text](screenshots/1.png)
+
+![Alt text](screenshots/0.png)
+
 ## What is it?
 
 This project delivers a complete OS environment (bootloader + kernel + userspace) built using only Rust and minimal assembly. No standard library or external dependencies - just pure, baremetal code that talks directly to hardware.
