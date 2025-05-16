@@ -67,14 +67,14 @@ disk:
 
 	@mcopy -i build/fat16.img icons/elf.tga "::icons/elf.tga"
 	@mcopy -i build/fat16.img icons/file.tga "::icons/file.tga"
-        @mcopy -i build/fat16.img icons/folder.tga "::icons/folder.tga"
-        @mcopy -i build/fat16.img icons/folder2.tga "::icons/folder2.tga"
-        @mcopy -i build/fat16.img icons/tga.tga "::icons/tga.tga"
-        @mcopy -i build/fat16.img icons/cat0.tga "::icons/cat0.tga"
-        @mcopy -i build/fat16.img icons/cat1.tga "::icons/cat1.tga"
-        @mcopy -i build/fat16.img icons/cat2.tga "::icons/cat2.tga"
-
-        @mcopy -i build/fat16.img font.psf "::/sys/font/font.psf"
+	@mcopy -i build/fat16.img icons/folder.tga "::icons/folder.tga"
+	@mcopy -i build/fat16.img icons/folder2.tga "::icons/folder2.tga"
+	@mcopy -i build/fat16.img icons/tga.tga "::icons/tga.tga"
+	@mcopy -i build/fat16.img icons/cat0.tga "::icons/cat0.tga"
+	@mcopy -i build/fat16.img icons/cat1.tga "::icons/cat1.tga"
+	@mcopy -i build/fat16.img icons/cat2.tga "::icons/cat2.tga"
+	
+	@mcopy -i build/fat16.img font.psf "::/sys/font/font.psf"
 
 	@mcopy -i build/fat16.img target/bits32-I/release/userland "::user/user.elf"
 	@mcopy -i build/fat16.img target/bits32-I/release/proc1 "::user/desktop/proc1.elf"
