@@ -16,7 +16,7 @@ impl File {
         let size = size(fname);
 
         if size == 699669 {
-            crate::println!("FILE NOT FOUND NIGGER");
+            crate::println!("[x] File not found");
             let string_ptr = fname.as_ptr();
             let string_len = fname.len();
 
@@ -114,14 +114,14 @@ impl File {
     }
 
     pub fn get_file_entry(&self) -> Entry {
-        let e = crate::syscall::syscall(
-            3,
-            self.fname.as_ptr() as u32,
-            core::ptr::addr_of!(FILE_ENTRY) as u32,
-            self.fname.len() as u32,
-        );
-
         unsafe {
+            let e = crate::syscall::syscall(
+                3,
+                self.fname.as_ptr() as u32,
+                core::ptr::addr_of!(FILE_ENTRY) as u32,
+                self.fname.len() as u32,
+            );
+
             FILE_ENTRY = *(e as *const Entry);
         }
 
@@ -130,11 +130,7 @@ impl File {
 
     pub fn is_dir(&self) -> bool {
         let file_entry = self.get_file_entry();
-        if file_entry.attributes & 0x10 != 0 {
-            true
-        } else {
-            false
-        }
+        file_entry.attributes & 0x10 != 0
     }
 
     pub fn get_file_extention(&self) -> &str {
@@ -204,6 +200,12 @@ pub struct Entry {
     modified_date: u16,
     first_cluster_low: u16,
     pub size: u32,
+}
+
+impl Entry {
+    pub fn is_dir(&self) -> bool {
+        self.attributes & 0x10 != 0
+    }
 }
 
 pub fn expand_path_8_3(path: &str) -> &[u8] {

@@ -15,6 +15,7 @@ pub mod port;
 pub mod rng;
 pub mod serial;
 pub mod syscall;
+pub mod hash;
 
 #[inline(always)]
 pub fn disable_interrupts() {

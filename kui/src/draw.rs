@@ -348,8 +348,6 @@ pub fn mk_grid(frame: &mut Frame, grid: Grid) {
     let mut y = 0;
 
     for (i, child) in frame.children.iter_mut().enumerate() {
-        libk::println!(">{:?}", child.get_x());
-        libk::println!("{:?}", frame.width.absolute);
 
         let rel_x = if child.get_x().relative.is_none() {
             0.0

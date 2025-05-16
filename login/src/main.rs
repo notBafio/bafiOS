@@ -133,9 +133,6 @@ pub fn login(w: &mut Widget, a1: u32, _a2: u32, _a3: u32) {
                 let uname = f.get("USER");
                 let psw = f.get("USERPSW");
 
-                libk::println!(">> {:?}", uname);
-                libk::println!(">> {:?}", psw);
-
                 if uname.is_some() && psw.is_some() {
                     match uname.unwrap() {
                         crate::bafioDb::Value::String(s) => {
@@ -151,7 +148,7 @@ pub fn login(w: &mut Widget, a1: u32, _a2: u32, _a3: u32) {
                     match psw.unwrap() {
                         crate::bafioDb::Value::String(s) => {
                             if password.is_some() {
-                                if s == password.unwrap() {
+                                if s == core::str::from_utf8_unchecked(&libk::hash::hash_to_hex(&libk::hash::hash_128bit(password.unwrap().as_bytes()))) {
                                     p2 = true;
                                 }
                             }
