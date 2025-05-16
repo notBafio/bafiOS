@@ -2,9 +2,11 @@
 
 A baremetal x86_32 operating system crafted from scratch in Rust.
 
-![Alt text](screenshots/1.png)
+![Login img](screenshots/1.png)
 
-![Alt text](screenshots/0.png)
+<img src="screenshots/1.png" width="50" />
+
+![Desktop img](screenshots/0.png)
 
 ## What is it?
 
