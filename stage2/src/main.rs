@@ -297,8 +297,6 @@ fn find_vbe_mode() -> u16 {
             continue;
         }
 
-        println!("mode: {} -> {} {} {}", mode_bpp, mode_red, mode_green, mode_blue);
-
         load_vbe_mode(best_mode);
         let best_mode_width = unsafe { VBE_MODE.width };
         let best_mode_height = unsafe { VBE_MODE.height };
