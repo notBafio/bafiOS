@@ -1,11 +1,9 @@
 ENTRY(_start)
 
 SECTIONS {
-    . = 0x500;
-    _stack_start = .;
 
     . = 0x7c00;
-    _stack_end = .;
+    _stack_top = .;
 
     .boot :
     {
