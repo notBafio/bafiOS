@@ -2,9 +2,9 @@
 
 A baremetal x86_32 operating system crafted from scratch in Rust.
 
-<img src="screenshots/1.png" width="500" />
+<img src="screenshots/1.png" width="800" />
 
-<img src="screenshots/0.png" width="500" />
+<img src="screenshots/0.png" width="800" />
 
 ## What is it?
 
