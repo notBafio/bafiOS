@@ -21,6 +21,7 @@ This project delivers a complete OS environment (bootloader + kernel + userspace
 
 ## Coming Soon
 
+- 🚧 **Memory**: Paging
 - 🚧 **Authentication**: password hashing and profiles management
 - 🚧 **Terminal**: More command-line tools and utilities
 - 🚧 **Libraries**: Shared library support
