@@ -133,11 +133,11 @@ pub fn list_entries(dir: &str) -> u8 {
 pub fn start_file(_w: &mut Widget, a1: u32, _a2: u32, _a3: u32) {
     unsafe {
         let p = (*(&raw mut PROGRAMS)).lock();
-        let t = "/USER/DESKTOP/PROC1   ELF";
+        /*let t = "/USER/DESKTOP/PROC1   ELF";
         let str_addr = t.as_ptr() as u32;
-        let str_len = t.len() as u32;
+        let str_len = t.len() as u32;*/
 
-        libk::elf::load_elf(&p[a1 as usize], Some(&[str_addr, str_len, 0, 0]));
+        let _ = libk::elf::load_elf(&p[a1 as usize], Some(&[0, 0, 0, 0]));
     }
 }
 
