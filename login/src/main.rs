@@ -109,7 +109,7 @@ pub extern "C" fn _start() -> ! {
     lock.add(frame);
     draw::init(lock);
 
-    libk::println!("Kyborg");
+    libk::println!("Done");
 
     loop {}
 }
@@ -165,7 +165,7 @@ pub fn login(w: &mut Widget, a1: u32, _a2: u32, _a3: u32) {
 
                     let _ = libk::elf::load_elf("USER/USER.ELF", None);
 
-                    kui::draw::exit(w, 0, 0, 0);
+                    kui::draw::exit(w, kui::widgets::WINDOWS[0].id as u32, 0, 0);
                 } else {
                     p1 = false;
                     p2 = false;

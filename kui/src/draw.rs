@@ -234,34 +234,34 @@ pub fn cap(n: i16) -> u32 {
 }
 
 pub fn init(mut w: Window) {
-    if w.action_bar == true {
-        let exit_btn = Widget::Button(Button {
-            id: 0,
-            label: crate::alloc::string::String::from("x"),
-            x: Size::from_u32(0),
-            y: Size::from_u32(0),
-            width: Size::new("19"),
-            height: Size::new("19"),
-            color: Color::rgb(245, 0, 79),
-            event: crate::draw::exit,
-            padding: Size::new("0"),
-            border_radius: Size::new("0"),
-            text_color: Color::rgb(0, 0, 0),
-            real_x: 0,
-            real_y: 0,
-            text_align: Align::Center,
-            args: [0; 3],
-        });
-
-        w.add_exit(exit_btn);
-    }
-
     unsafe {
         (*(&raw mut crate::widgets::SCREEN)).init();
 
         let add_w_result = *(libk::syscall::add_window(w.to_window()) as *const (u32, u32));
         w.id = add_w_result.0 as u16;
         w.buffer = add_w_result.1;
+
+        if w.action_bar == true {
+            let exit_btn = Widget::Button(Button {
+                id: 0,
+                label: crate::alloc::string::String::from("x"),
+                x: Size::from_u32(0),
+                y: Size::from_u32(0),
+                width: Size::new("19"),
+                height: Size::new("19"),
+                color: Color::rgb(245, 0, 79),
+                event: crate::draw::exit,
+                padding: Size::new("0"),
+                border_radius: Size::new("0"),
+                text_color: Color::rgb(0, 0, 0),
+                real_x: 0,
+                real_y: 0,
+                text_align: Align::Center,
+                args: [w.id as u32, 0, 0],
+            });
+
+            w.add_exit(exit_btn);
+        }
 
         (*(&raw mut crate::widgets::WINDOWS)).push(w.clone());
 
@@ -806,29 +806,18 @@ pub fn mouse_handler(wid: u32, mx: u32, my: u32) -> ! {
     unsafe {
         INPUT.0 = wid as u16;
 
+        if (*(&raw mut EXITING))
+            .compare_exchange(true, false, Ordering::SeqCst, Ordering::SeqCst)
+            .is_ok()
+        {
+            syscall::exit();
+        }
+
         let windows = &mut (*(&raw mut crate::widgets::WINDOWS));
 
         if let Some(window) = windows.iter_mut().find(|w| w.id == INPUT.0 as u16) {
             for child in &mut window.children {
                 recursive_check(child, mx, my, wid as u16);
-            }
-
-            if (*(&raw mut EXITING))
-                .compare_exchange(true, false, Ordering::SeqCst, Ordering::SeqCst)
-                .is_ok()
-            {
-                libk::println!("Exiting...");
-                syscall::remove_window(wid);
-
-                let buffer = window.buffer;
-
-                (*(&raw mut crate::psf::FONT)).unload();
-
-                for child in &mut window.children {
-                    dealloc_check(child);
-                }
-
-                syscall::free(buffer);
             }
         }
     }
@@ -845,22 +834,22 @@ pub fn recursive_check(head: &mut Widget, x: u32, y: u32, wid: u16) {
         }
 
         Widget::Button(_) => {
-            check_widget(head, x, y);
+            check_widget(head, x, y, wid);
         }
         Widget::Label(_) => {
-            check_widget(head, x, y);
+            check_widget(head, x, y, wid);
         }
         Widget::InputLabel(_) => {
-            check_widget(head, x, y);
+            check_widget(head, x, y, wid);
         }
         Widget::Image(_) => {
-            check_widget(head, x, y);
+            check_widget(head, x, y, wid);
         }
         _ => {}
     }
 }
 
-pub fn check_widget(w: &mut Widget, x: u32, y: u32) {
+pub fn check_widget(w: &mut Widget, x: u32, y: u32, wid: u16) {
     let wx = w.x();
     let wy = w.y();
     let ww = w.get_width().absolute.unwrap();
@@ -1022,12 +1011,33 @@ pub fn dealloc_check(head: &Widget) {
     }
 }
 
-pub fn exit(_w: &mut Widget, _arg1: u32, _arg2: u32, _arg3: u32) {
+pub fn exit(_w: &mut Widget, arg1: u32, arg2: u32, arg3: u32) {
+
     unsafe {
         KB = false;
     }
 
     unsafe { (*(&raw mut EXITING)).store(true, Ordering::Relaxed) };
+
+    unsafe {
+        if let Some(window) = (*(&raw mut crate::widgets::WINDOWS)).iter_mut().find(|w| w.id as u32 == arg1) {
+            (*(&raw mut crate::psf::FONT)).unload();
+
+            for child in &mut window.children {
+                dealloc_check(child);
+            }
+
+            syscall::remove_window(arg1);
+        }
+
+        for i in 0..(*(&raw mut crate::widgets::WINDOWS)).len() {
+            if (*(&raw mut crate::widgets::WINDOWS))[i].id == arg1 as u16 {
+                libk::println!("Angelo del ippocastani");
+                (*(&raw mut crate::widgets::WINDOWS)).remove(i);
+                break;
+            }
+        }
+    }
 
     libk::syscall::exit();
 }
