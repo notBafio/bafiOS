@@ -68,7 +68,6 @@ impl File {
                 core::slice::from_raw_parts(self.ptr as *const u8, self.size as usize)
             };
         } else {
-            crate::println!("I feel fucked");
             return unsafe {
                 core::slice::from_raw_parts(self.ptr as *const u8, self.size as usize)
             };
