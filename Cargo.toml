@@ -1,0 +1,46 @@
+[workspace]
+members = [
+    "bootloader",
+    "stage2",
+    "stage3",
+    "kernel",
+    "userland",
+    "proc1",
+    "kui",
+    "libk",
+    "terminal",
+    "filemanager",
+    "bafioDb",
+    "ide",
+    "exec",
+    "img",
+    "login",
+]
+
+resolver="2"
+
+[workspace.package]
+version = "0.1.0"
+authors = ["Bafio", ""]
+edition = "2024"
+
+[profile.dev.package.bootloader]
+opt-level = "s"
+codegen-units = 1
+debug = false
+overflow-checks = false
+
+[profile.release.package.bootloader]
+opt-level = "s"
+codegen-units = 1
+debug = false
+overflow-checks = false
+
+[profile.dev]
+panic = "abort"
+opt-level = 1
+
+[profile.release]
+panic = "abort"
+opt-level = 1
+
