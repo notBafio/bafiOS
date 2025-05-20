@@ -26,7 +26,7 @@ This project delivers a complete OS environment (bootloader + kernel + userspace
 ## Coming Soon
 
 - 🚧 **Memory**: Paging
-- 🚧 **Terminal**: More commands (already added echo, mkfile ,mkdir, cd and ls)
+- 🚧 **Terminal**: More commands 
 - 🚧 **Libraries**: Shared library support
 - 🚧 **Compatibility**: Basic libc implementation
 - 🚧 **Internet**: Improved TCP protocol stack
