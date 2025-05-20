@@ -30,6 +30,7 @@ This project delivers a complete OS environment (bootloader + kernel + userspace
 - 🚧 **Libraries**: Shared library support
 - 🚧 **Compatibility**: Basic libc implementation
 - 🚧 **Internet**: Improved TCP protocol stack
+- 🚧 **File system**: custom FS
 - 🚧 **Architecture**: Extended 64-bit support
 
 ## Build & Run
