@@ -333,15 +333,20 @@ impl Fat16 {
         self.to_fat_name(parts[parts.len() - 1])
     }
 
-    pub fn create_file(&mut self, filename: &str) -> Option<Entry> {
+    pub fn create_file(&mut self, filename: &str) {
         let fat_name = self.path_to_fat_name(filename);
-        let parent_dir = self.find_dir(filename)?;
-        let free_cluster = self.get_cluster_free()?;
+        let parent_dir = self.find_dir(filename);
+        let free_cluster = self.get_cluster_free();
+
+        if parent_dir.is_none() || free_cluster.is_none() {
+            return;
+        }
+
         let new_entry = Entry {
             name: fat_name,
             attributes: 0x20,
-            first_cluster_low: free_cluster as u16,
-            first_cluster_high: (free_cluster >> 16) as u16,
+            first_cluster_low: free_cluster.unwrap() as u16,
+            first_cluster_high: (free_cluster.unwrap() >> 16) as u16,
             size: 0,
             created_time: 0,
             modified_time: 0,
@@ -351,8 +356,67 @@ impl Fat16 {
             created_time_tenths: 0,
             reserved: 0,
         };
-        self.make_file(parent_dir, new_entry);
-        Some(new_entry)
+
+        self.make_file(parent_dir.unwrap(), new_entry);
+    }
+
+    pub fn create_dir(&mut self, filename: &str) {
+        let fat_name = self.path_to_fat_name(filename);
+        let parent_dir = self.find_dir(filename);
+        let free_cluster = self.get_cluster_free();
+
+        if parent_dir.is_none() || free_cluster.is_none() {
+            return;
+        }
+
+        let new_entry = Entry {
+            name: fat_name,
+            attributes: 0x10,
+            first_cluster_low: free_cluster.unwrap() as u16,
+            first_cluster_high: (free_cluster.unwrap() >> 16) as u16,
+            size: 0,
+            created_time: 0,
+            modified_time: 0,
+            created_date: 0,
+            modified_date: 0,
+            accessed_date: 0,
+            created_time_tenths: 0,
+            reserved: 0,
+        };
+
+        let f1 = Entry {
+            name: [b'.', b' ', b' ', b' ', b' ', b' ', b' ', b' ', b' ', b' ', b' ',],
+            attributes: 0x20,
+            first_cluster_low: new_entry.first_cluster_low,
+            first_cluster_high: new_entry.first_cluster_high,
+            size: 0,
+            created_time: 0,
+            modified_time: 0,
+            created_date: 0,
+            modified_date: 0,
+            accessed_date: 0,
+            created_time_tenths: 0,
+            reserved: 0,
+        };
+
+        let f2 = Entry {
+            name: [b'.', b'.', b' ', b' ', b' ', b' ', b' ', b' ', b' ', b' ', b' ',],
+            attributes: 0x10,
+            first_cluster_low: parent_dir.unwrap().first_cluster_low,
+            first_cluster_high: parent_dir.unwrap().first_cluster_high,
+            size: 0,
+            created_time: 0,
+            modified_time: 0,
+            created_date: 0,
+            modified_date: 0,
+            accessed_date: 0,
+            created_time_tenths: 0,
+            reserved: 0,
+        };
+
+        self.make_file(parent_dir.unwrap(), new_entry);
+        self.make_file(new_entry, f1);
+        self.make_file(new_entry, f2);
     }
 
     pub fn get_cluster_free(&self) -> Option<u32> {
@@ -498,7 +562,7 @@ impl Fat16 {
             }
 
             dma::write(
-                lba,
+                OFFSET_LBA + lba,
                 self.header.sectors_per_cluster,
                 0xE0,
                 cluster_buffer as *const u8,
@@ -626,7 +690,7 @@ impl Fat16 {
             let mut current_cluster = dir.first_cluster_low;
             let mut sectors_count = 0;
 
-            while current_cluster >= 0x0002 && current_cluster < 0xFFF0 {
+            while current_cluster >= 0x0000 && current_cluster < 0xFFF0 {
                 sectors_count += self.header.sectors_per_cluster as u16;
                 current_cluster = self.get_fat(current_cluster as usize);
             }
@@ -730,7 +794,7 @@ impl Fat16 {
             }
 
             dma::write(
-                lba,
+                OFFSET_LBA + lba,
                 self.header.sectors_per_cluster,
                 0xE0,
                 cluster_buffer as *const u8,
@@ -783,7 +847,7 @@ impl Fat16 {
 
             *buffer_u16.add(entry_offset) = value;
 
-            dma::write(fat_lba, 1, 0xE0, buffer as *const u16);
+            dma::write(OFFSET_LBA + fat_lba, 1, 0xE0, buffer as *const u16);
 
             (*(&raw mut crate::pmm::PADDR)).dealloc(buffer);
         }
@@ -838,7 +902,7 @@ impl Fat16 {
         if found {
 
             dma::write(
-                folder_lba,
+                OFFSET_LBA + folder_lba,
                 sectors_to_read as u8,
                 0xE0,
                 dir_buffer as *const u8,
@@ -891,7 +955,7 @@ impl Fat16 {
             }
         }
 
-        dma::write(lba, sectors as u8, 0xE0, dir_buffer as *const u8);
+        dma::write(OFFSET_LBA + lba, sectors as u8, 0xE0, dir_buffer as *const u8);
         unsafe {
             (*(&raw mut crate::pmm::PADDR)).dealloc(dir_buffer);
         }

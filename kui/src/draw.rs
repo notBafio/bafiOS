@@ -914,7 +914,7 @@ pub extern "C" fn keyboard_thread() {
         unsafe {
             c += 1;
 
-            if c >= 1_000_000 {
+            if c >= 100_000 {
                 for i in 0..64 {
                     let byte = core::ptr::read_volatile(&CHAR_BUFFER[i]);
                     if byte == 0 {

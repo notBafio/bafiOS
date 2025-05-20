@@ -452,8 +452,7 @@ pub extern "C" fn syscall_handler(eax: u32, ebx: u32, ecx: u32, edx: u32) -> u32
                     fname[i] = *((ebx + i as u32) as *mut u8);
                 }
 
-                let filename =
-                    core::str::from_utf8_unchecked(&fname[..core::cmp::min(edx as usize, 256)]);
+                let filename = core::str::from_utf8_unchecked(&fname[..core::cmp::min(edx as usize, 256)]);
 
                 (*(&raw mut crate::fat16::structs::FAT16)).create_file(&format_path_8_3(filename));
             }
@@ -463,6 +462,20 @@ pub extern "C" fn syscall_handler(eax: u32, ebx: u32, ecx: u32, edx: u32) -> u32
 
                 (*(&raw mut COMPOSER)).copy_window(id);
                 (*(&raw mut COMPOSER)).copy_window_fb(id);
+            }
+
+            42 => {
+                (*(&raw mut crate::fat16::structs::FAT16)).reload();
+
+                let mut fname = [0u8; 256];
+                for i in 0..(core::cmp::min(edx as usize, 256)) {
+                    fname[i] = *((ebx + i as u32) as *mut u8);
+                }
+
+                let filename =
+                    core::str::from_utf8_unchecked(&fname[..core::cmp::min(edx as usize, 256)]);
+
+                (*(&raw mut crate::fat16::structs::FAT16)).create_dir(&format_path_8_3(filename));
             }
 
             100 => loop {},

@@ -11,6 +11,19 @@ pub struct File {
     pub write: bool,
 }
 
+pub fn make_file(fname: &str) {
+    let string_ptr = fname.as_ptr();
+    let string_len = fname.len();
+
+    crate::syscall::syscall(40, string_ptr as u32, 0, string_len as u32);
+}
+
+pub fn make_dir(fname: &str) {
+    let string_ptr = fname.as_ptr();
+    let string_len = fname.len();
+
+    crate::syscall::syscall(42, string_ptr as u32, 0, string_len as u32);
+}
 impl File {
     pub fn new(fname: &str) -> File {
         let size = size(fname);
