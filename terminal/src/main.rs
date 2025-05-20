@@ -157,7 +157,7 @@ pub fn parse_command(w: &mut Widget, command: &str) {
             
             "cd" => {
                 if commands.len() <= 1 {
-                    append_output(l, "Missing directory name");
+                    append_output(l, " Missing directory name");
                     return;
                 }
 
@@ -211,7 +211,7 @@ pub fn parse_command(w: &mut Widget, command: &str) {
             
             "mkdir" => {
                 if commands.len() <= 1 {
-                    append_output(l, "Missing directory name");
+                    append_output(l, " Missing directory name");
                     return;
                 }
 
@@ -225,12 +225,12 @@ pub fn parse_command(w: &mut Widget, command: &str) {
                 });
 
                 libk::io::make_dir(&path);
-                append_output(l, &format!("Created directory: {}", commands[1]));
+                append_output(l, &format!(" Created directory: {}", commands[1]));
             },
             
             "mkfile" => {
                 if commands.len() <= 1 {
-                    append_output(l, "Missing file name");
+                    append_output(l, " Missing file name");
                     return;
                 }
 
@@ -244,12 +244,12 @@ pub fn parse_command(w: &mut Widget, command: &str) {
                 });
 
                 libk::io::make_file(&path);
-                append_output(l, &format!("Created file: {}", commands[1]));
+                append_output(l, &format!(" Created file: {}", commands[1]));
             },
             
             "exec" => {
                 if commands.len() <= 1 {
-                    append_output(l, "Missing executable name");
+                    append_output(l, " Missing executable name");
                     return;
                 }
 
