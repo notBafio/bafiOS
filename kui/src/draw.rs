@@ -902,7 +902,6 @@ pub static mut KB: bool = false;
 #[unsafe(no_mangle)]
 #[inline(never)]
 pub extern "C" fn keyboard_thread() {
-    libk::println!("KB started");
 
     let mut c = 0;
     let mut changed = false;
@@ -920,9 +919,17 @@ pub extern "C" fn keyboard_thread() {
                     if byte == 0 {
                         break;
                     }
+
+                    while FLAG
+                        .compare_exchange(false, true, Ordering::Acquire, Ordering::Relaxed)
+                        .is_err()
+                    {}
+
                     changed = true;
                     find_input_widget(byte as char);
                     core::ptr::write_volatile(&mut CHAR_BUFFER[i], 0);
+
+                    FLAG.store(false, Ordering::Release);
                 }
 
                 if changed {
@@ -1041,6 +1048,7 @@ pub fn exit(_w: &mut Widget, arg1: u32, arg2: u32, arg3: u32) {
 }
 
 pub fn resize_handler(id: u32, w: u32, h: u32, buffer: u32) -> ! {
+
     while FLAG
         .compare_exchange(false, true, Ordering::Acquire, Ordering::Relaxed)
         .is_err()

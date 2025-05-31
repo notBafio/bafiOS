@@ -299,6 +299,7 @@ impl Mouse {
                             w.resize,
                             Some(&[w.wid as u32, w.width as u32, w.height as u32, w.buffer]),
                         );
+
                 } else if (*(&raw mut DRAGGING_WINDOW)).load(Ordering::Relaxed) != 0 {
                     (*(&raw mut DRAGGING_WINDOW)).store(0, Ordering::Relaxed);
                     (*(&raw mut RESIZING_WINDOW)).store(0, Ordering::Relaxed);
@@ -486,9 +487,7 @@ impl Mouse {
                                 (*(&raw mut RESIZING_WINDOW)).store(0, Ordering::Relaxed);
                                 W_WIDTH = 0;
                                 W_HEIGHT = 0;
-                            }
 
-                            unsafe {
                                 (*(&raw mut DRAGGING_WINDOW)).store(ws.wid + 0, Ordering::Relaxed)
                             };
                             return;
@@ -583,10 +582,10 @@ impl Mouse {
         mouse_x: u16,
         mouse_y: u16,
     ) -> bool {
-        let x_min = w_x + w_width.wrapping_sub(8);
-        let x_max = w_x + w_width.wrapping_sub(0);
-        let y_min = w_y + w_height.wrapping_sub(8);
-        let y_max = w_y + w_height.wrapping_sub(0);
+        let x_min = w_x.wrapping_add(w_width.wrapping_sub(8));
+        let x_max = w_x.wrapping_add(w_width.wrapping_sub(0));
+        let y_min = w_y.wrapping_add(w_height.wrapping_sub(8));
+        let y_max = w_y.wrapping_add(w_height.wrapping_sub(0));
 
         (mouse_x >= x_min && mouse_x <= x_max) && (mouse_y >= y_min && mouse_y <= y_max)
     }
