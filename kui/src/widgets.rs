@@ -892,13 +892,13 @@ impl Button {
             if display == Display::None {
                 if self.x.relative.is_some() {
                     self.x.absolute = Some(crate::kui_ceil(
-                        px as f32 + pw as f32 / 100.0 * self.x.relative.unwrap() as f32,
+                        pw as f32 / 100.0 * self.x.relative.unwrap() as f32,
                     ) as u32);
                 }
 
                 if self.y.relative.is_some() {
                     self.y.absolute = Some(crate::kui_ceil(
-                        py as f32 + ph as f32 / 100.0 * self.y.relative.unwrap() as f32,
+                        ph as f32 / 100.0 * self.y.relative.unwrap() as f32,
                     ) as u32);
                 }
 
@@ -1052,15 +1052,16 @@ impl Label {
 
     pub fn reload(&mut self, px: u32, py: u32, pw: u32, ph: u32, display: Display) {
         if display == Display::None {
+
             if self.x.relative.is_some() {
                 self.x.absolute = Some(crate::kui_ceil(
-                    px as f32 + pw as f32 / 100.0 * self.x.relative.unwrap() as f32,
+                    pw as f32 / 100.0 * self.x.relative.unwrap() as f32,
                 ) as u32);
             }
 
             if self.y.relative.is_some() {
                 self.y.absolute = Some(crate::kui_ceil(
-                    py as f32 + ph as f32 / 100.0 * self.y.relative.unwrap() as f32,
+                    ph as f32 / 100.0 * self.y.relative.unwrap() as f32,
                 ) as u32);
             }
 

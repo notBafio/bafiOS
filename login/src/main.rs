@@ -40,64 +40,72 @@ pub extern "C" fn _start() -> ! {
             .width(Size::new("50%"))
             .height(Size::new("50%"))
             .color(Color::rgb(255, 130, 130))
-            .display(Display::Grid(Grid::new(1, 7))),
+            .display(Display::None),
     );
 
     use kui::widgets::Label;
 
     let place_holder = Widget::Label(Label::new().width(Size::new("0")).height(Size::new("0")));
 
+    let img_w =  unsafe { kui::kui_ceil(kui::widgets::SCREEN.height.absolute.unwrap() as f32 / 2.0 * 20.0 / 100.0) as u32 };
     let i = Widget::Image(
         Image::new("ICONS/CAT1.TGA")
             .x(Size::new("40%"))
-            .width(Size::new("20%"))
-            .height(Size::new("100%")),
+            .y(Size::new("5%"))
+            .width(Size::from_u32(img_w))
+            .height(Size::new("20%")),
     );
+
     let tn = Widget::Label(
         Label::new()
             .text("Username")
             .color(Color::rgb(255, 130, 130))
             .x(Size::new("10%"))
+            .y(Size::new("30%"))
             .width(Size::new("80%"))
-            .height(Size::new("30%")),
+            .height(Size::new("10%")),
     );
+
     let n = Widget::InputLabel(
         Label::new()
             .text("")
             .color(Color::rgb(255, 255, 255))
             .x(Size::new("10%"))
+            .y(Size::new("40%"))
             .width(Size::new("80%"))
-            .height(Size::new("80%")),
+            .height(Size::new("10%")),
     );
+
+    let tp = Widget::Label(
+        Label::new()
+            .text("Password")
+            .x(Size::new("10%"))
+            .y(Size::new("55%"))
+            .color(Color::rgb(255, 130, 130))
+            .width(Size::new("80%"))
+            .height(Size::new("10%")),
+    );
+
     let n2 = Widget::InputLabel(
         Label::new()
             .text("")
             .color(Color::rgb(255, 255, 255))
             .x(Size::new("10%"))
+            .y(Size::new("65%"))
             .width(Size::new("80%"))
-            .height(Size::new("80%")),
+            .height(Size::new("10%")),
     );
-    let tp = Widget::Label(
-        Label::new()
-            .text("Password")
-            .x(Size::new("10%"))
-            .color(Color::rgb(255, 130, 130))
-            .width(Size::new("80%"))
-            .height(Size::new("30%")),
-    );
+
     let btn = Widget::Button(
         Button::new()
             .label("Log in")
             .x(Size::new("33%"))
+            .y(Size::new("80%"))
             .width(Size::new("33%"))
-            .height(Size::new("80%"))
+            .height(Size::new("10%"))
             .event(login),
     );
-
-    libk::println!("{:#?}", n);
-    libk::println!("{:#?}", n2);
-
-    frame.add(place_holder);
+        
     frame.add(i);
     frame.add(tn);
     frame.add(n);
@@ -124,8 +132,8 @@ pub fn login(w: &mut Widget, a1: u32, _a2: u32, _a3: u32) {
 
         match &kui::widgets::WINDOWS[0].children[1] {
             kui::widgets::Widget::Frame(f) => {
-                let username = &f.children[3].get_label();
-                let password = &f.children[5].get_label();
+                let username = &f.children[2].get_label();
+                let password = &f.children[4].get_label();
                 let mut p1 = false;
                 let mut p2 = false;
 
