@@ -1037,7 +1037,6 @@ pub fn exit(_w: &mut Widget, arg1: u32, arg2: u32, arg3: u32) {
 
         for i in 0..(*(&raw mut crate::widgets::WINDOWS)).len() {
             if (*(&raw mut crate::widgets::WINDOWS))[i].id == arg1 as u16 {
-                libk::println!("Angelo del ippocastani");
                 (*(&raw mut crate::widgets::WINDOWS)).remove(i);
                 break;
             }

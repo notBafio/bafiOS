@@ -134,7 +134,7 @@ pub fn parse_command(w: &mut Widget, command: &str) {
             },
             
             "pwd" => {
-                let path = with_terminal(|t| t.path.clone());
+                let path = String::from(" ") + &with_terminal(|t| t.path.clone());
                 append_output(l, &path);
             },
             
@@ -173,6 +173,8 @@ pub fn parse_command(w: &mut Widget, command: &str) {
                         } else {
                             terminal.path = String::from("/");
                         }
+
+                        append_output(l, "");
                         return;
                     }
 
@@ -203,8 +205,9 @@ pub fn parse_command(w: &mut Widget, command: &str) {
 
                     if dir_exists {
                         terminal.path = new_path;
+                        append_output(l, "");
                     } else {
-                        //append_output(l, &format!("Directory not found: {}", target_dir));
+                        append_output(l, &format!("Directory not found: {}", target_dir));
                     }
                 });
             },
