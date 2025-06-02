@@ -71,6 +71,6 @@ wsl dd if=build/fat16.img of=build/disk.img bs=512 seek=9216 conv=notrunc
 
 wsl rm -rf build/fat16.img
 
-qemu-system-i386 -drive file=".\build\disk.img",format=raw -m 1G -serial stdio -netdev user,id=n0 -device rtl8139,netdev=n0 -no-reboot -object filter-dump,id=d0,netdev=n0,file=net.pcap
+qemu-system-x86_64 -drive file=".\build\disk.img",format=raw -m 1G -serial stdio -netdev user,id=n0 -device rtl8139,netdev=n0 -no-reboot -object filter-dump,id=d0,netdev=n0,file=net.pcap
  
 pause

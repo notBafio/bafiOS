@@ -10,7 +10,7 @@ rust:
 
 	@sudo apt update
 	@sudo apt -y install mtools
-	@sudo apt -y install qemu-system-i386
+	@sudo apt -y install qemu-system-x86_64
 
 	@cargo build --package=bootloader --target=bits16.json
 	@cargo build --package=stage2 --target=bits16.json
@@ -97,4 +97,4 @@ clean:
 
 .PHONY: run
 run:
-	@qemu-system-i386 -drive file="build/disk.img",format=raw -m 1G -serial stdio -netdev user,id=n0 -device rtl8139,netdev=n0 -no-reboot
+	@qemu-system-x86_64 -drive file="build/disk.img",format=raw -m 1G -serial stdio -netdev user,id=n0 -device rtl8139,netdev=n0 -no-reboot
