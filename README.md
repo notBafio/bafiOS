@@ -23,6 +23,11 @@ This project delivers a complete OS environment (bootloader + kernel + userspace
 - ✅ **Network**: Basic connectivity via RTL8139 driver
 - ✅ **Programs**: Dynamic ELF binary loader
 
+Work in progress:
+- ❗TTF font support
+- ❗Kui rewrite + basic 3D handling
+- ❗window manager rewrite
+
 ## Coming Soon
 
 - 🚧 **Memory**: Paging
