@@ -1,0 +1,16 @@
+[package]
+name = "login"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[dependencies]
+
+[dependencies.bafioDb]
+path = "../bafioDb"
+
+[dependencies.libk]
+path = "../libk"
+
+[dependencies.kui]
+path = "../kui"

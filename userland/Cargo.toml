@@ -1,0 +1,19 @@
+[package]
+name = "userland"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+[dependencies.libk]
+path = "../libk"
+
+[dependencies.kui]
+path = "../kui"
+
+[dependencies.bafioDb]
+path = "../bafioDb"
+

@@ -1,0 +1,14 @@
+[package]
+name = "filemanager"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[dependencies.libk]
+path = "../libk"
+
+[dependencies.kui]
+path = "../kui"
+
+[dependencies.bafioDb]
+path = "../bafioDb"
